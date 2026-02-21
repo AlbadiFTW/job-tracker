@@ -17,22 +17,11 @@ type Application = {
   id: string;
   company: string;
   role: string;
-  status: ApplicationStatus;
+  status: string;
   location?: string;
   salary?: string;
   notes?: string;
   appliedAt: string;
-};
-
-type ApplicationStatus = "Applied" | "Interview" | "Offer" | "Rejected";
-
-type FormState = {
-  company: string;
-  role: string;
-  status: ApplicationStatus;
-  location: string;
-  salary: string;
-  notes: string;
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -40,15 +29,6 @@ const STATUS_COLORS: Record<string, string> = {
   Interview: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
   Offer: "bg-green-500/20 text-green-400 border-green-500/30",
   Rejected: "bg-red-500/20 text-red-400 border-red-500/30",
-};
-
-const defaultForm: FormState = {
-  company: "",
-  role: "",
-  status: "Applied",
-  location: "",
-  salary: "",
-  notes: "",
 };
 
 export default function DashboardPage() {
@@ -60,7 +40,17 @@ export default function DashboardPage() {
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState<FormState>(defaultForm);
+  const [form, setForm] = useState<{
+    company: string;
+    role: string;
+    status: "Applied" | "Interview" | "Offer" | "Rejected";
+    location: string;
+    salary: string;
+    notes: string;
+  }>({
+    company: "", role: "", status: "Applied",
+    location: "", salary: "", notes: "",
+  });
 
   useEffect(() => {
     fetchApplications();
@@ -96,7 +86,10 @@ export default function DashboardPage() {
       });
       if (!res.ok) throw new Error("Failed to add application");
       toast.success("Application added successfully!", { id: loadingToast });
-      setForm(defaultForm);
+      setForm({
+        company: "", role: "", status: "Applied",
+        location: "", salary: "", notes: "",
+      });
       setAddOpen(false);
       fetchApplications();
     } catch (error) {
@@ -116,7 +109,10 @@ export default function DashboardPage() {
       });
       if (!res.ok) throw new Error("Failed to update application");
       toast.success("Application updated successfully!", { id: loadingToast });
-      setForm(defaultForm);
+      setForm({
+        company: "", role: "", status: "Applied",
+        location: "", salary: "", notes: "",
+      });
       setEditOpen(false);
       setEditingId(null);
       fetchApplications();
