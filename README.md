@@ -117,12 +117,25 @@ npx prisma migrate dev --name <migration-name>
 
 ## Deployment
 
-### Vercel
+### Vercel + Neon (Recommended)
 
-1. Push the repository to GitHub
-2. Import the project in Vercel
-3. Add DATABASE_URL and NEXTAUTH_SECRET
-4. Deploy
+This project is deployed using Vercel for hosting and Neon for serverless PostgreSQL.
+
+1. Create a free database at [neon.tech](https://neon.tech)
+2. Push this repo to GitHub
+3. Import the project at [vercel.com](https://vercel.com)
+4. Add these environment variables in Vercel:
+   - `DATABASE_URL` — your Neon connection string
+   - `NEXTAUTH_SECRET` — a random 32-character string
+   - `NEXTAUTH_URL` — your Vercel deployment URL (e.g. https://job-tracker.vercel.app)
+5. Deploy
+6. Run the seed script once locally against your production database to populate the demo account:
+```bash
+npm run prisma:seed
+```
+
+Also change `NEXTAUTH_URL` in the local setup section from a generic placeholder to:
+NEXTAUTH_URL="http://localhost:3000"
 
 ### Other Platforms
 
