@@ -17,7 +17,7 @@ type Application = {
   id: string;
   company: string;
   role: string;
-  status: string;
+  status: "Applied" | "Interview" | "Offer" | "Rejected";
   location?: string;
   salary?: string;
   notes?: string;
