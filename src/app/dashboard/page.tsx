@@ -292,7 +292,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="space-y-2">
                   <Label>Status</Label>
-                  <Select value={form.status} onValueChange={v => setForm({ ...form, status: v })}>
+                  <Select value={form.status} onValueChange={v => setForm({ ...form, status: v as "Applied" | "Interview" | "Offer" | "Rejected" })}>
                     <SelectTrigger className="bg-slate-800 border-slate-700">
                       <SelectValue />
                     </SelectTrigger>
@@ -348,7 +348,7 @@ export default function DashboardPage() {
                       <span className="text-slate-500 text-sm">
                         {new Date(app.appliedAt).toLocaleDateString()}
                       </span>
-                      <Select value={app.status} onValueChange={v => handleStatusChange(app.id, v)}>
+                      <Select value={app.status} onValueChange={v => handleStatusChange(app.id, v as "Applied" | "Interview" | "Offer" | "Rejected")}>
                         <SelectTrigger className={`w-32 text-xs border ${STATUS_COLORS[app.status]} bg-transparent`}>
                           <SelectValue />
                         </SelectTrigger>
@@ -418,7 +418,7 @@ export default function DashboardPage() {
               </div>
               <div className="space-y-2">
                 <Label>Status</Label>
-                <Select value={form.status} onValueChange={v => setForm({ ...form, status: v })}>
+                <Select value={form.status} onValueChange={v => setForm({ ...form, status: v as "Applied" | "Interview" | "Offer" | "Rejected" })}>
                   <SelectTrigger className="bg-slate-800 border-slate-700">
                     <SelectValue />
                   </SelectTrigger>
