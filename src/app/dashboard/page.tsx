@@ -157,7 +157,7 @@ export default function DashboardPage() {
     setForm({
       company: app.company,
       role: app.role,
-      status: app.status,
+      status: app.status as "Applied" | "Interview" | "Offer" | "Rejected",
       location: app.location || "",
       salary: app.salary || "",
       notes: app.notes || "",
