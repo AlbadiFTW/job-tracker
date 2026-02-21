@@ -24,6 +24,17 @@ type Application = {
   appliedAt: string;
 };
 
+type ApplicationStatus = "Applied" | "Interview" | "Offer" | "Rejected";
+
+type FormState = {
+  company: string;
+  role: string;
+  status: ApplicationStatus;
+  location: string;
+  salary: string;
+  notes: string;
+};
+
 const STATUS_COLORS: Record<string, string> = {
   Applied: "bg-blue-500/20 text-blue-400 border-blue-500/30",
   Interview: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
@@ -31,9 +42,13 @@ const STATUS_COLORS: Record<string, string> = {
   Rejected: "bg-red-500/20 text-red-400 border-red-500/30",
 };
 
-const defaultForm = {
-  company: "", role: "", status: "Applied" as const,
-  location: "", salary: "", notes: "",
+const defaultForm: FormState = {
+  company: "",
+  role: "",
+  status: "Applied",
+  location: "",
+  salary: "",
+  notes: "",
 };
 
 export default function DashboardPage() {
@@ -45,7 +60,7 @@ export default function DashboardPage() {
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState(defaultForm);
+  const [form, setForm] = useState<FormState>(defaultForm);
 
   useEffect(() => {
     fetchApplications();
