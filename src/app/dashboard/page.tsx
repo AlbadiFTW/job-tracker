@@ -182,177 +182,188 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      {/* Header */}
-      <div className="border-b border-slate-800 px-6 py-4 flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold">Job Tracker</h1>
-          <p className="text-slate-400 text-sm">Welcome back, {session?.user?.name}</p>
-        </div>
-        <div className="flex gap-2">
-          <Link href="/dashboard/analytics">
-            <Button variant="ghost" className="text-slate-400 hover:text-white">
-              <BarChart2 className="w-4 h-4 mr-2" /> Analytics
-            </Button>
-          </Link>
-          <Button variant="ghost" onClick={() => signOut({ callbackUrl: "/login" })}
-            className="text-slate-400 hover:text-white">
-            <LogOut className="w-4 h-4 mr-2" /> Sign out
-          </Button>
-        </div>
+    <div className="min-h-screen bg-black text-white">
+      {/* Background gradients */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-50">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px]" />
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { label: "Total Applied", value: stats.total, icon: Briefcase, color: "text-blue-400" },
-            { label: "Interviews", value: stats.interview, icon: Clock, color: "text-yellow-400" },
-            { label: "Offers", value: stats.offer, icon: CheckCircle, color: "text-green-400" },
-            { label: "Rejected", value: stats.rejected, icon: XCircle, color: "text-red-400" },
-          ].map((stat) => (
-            <Card key={stat.label} className="bg-slate-900 border-slate-800">
-              <CardContent className="pt-6">
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="border-b border-white/10 px-6 lg:px-12 py-6">
+          <div className="max-w-[1400px] mx-auto flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold">JobTrackr</h1>
+              <p className="text-white/50 text-sm mt-1">Welcome back, {session?.user?.name}</p>
+            </div>
+            <div className="flex gap-3">
+              <Link href="/dashboard/analytics">
+                <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/5">
+                  <BarChart2 className="w-4 h-4 mr-2" /> Analytics
+                </Button>
+              </Link>
+              <Button variant="ghost" onClick={() => signOut({ callbackUrl: "/login" })}
+                className="text-white/70 hover:text-white hover:bg-white/5">
+                <LogOut className="w-4 h-4 mr-2" /> Sign out
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12 space-y-10">
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+            {[
+              { label: "Total Applied", value: stats.total, icon: Briefcase, color: "from-blue-500 to-blue-600" },
+              { label: "Interviews", value: stats.interview, icon: Clock, color: "from-yellow-500 to-yellow-600" },
+              { label: "Offers", value: stats.offer, icon: CheckCircle, color: "from-green-500 to-green-600" },
+              { label: "Rejected", value: stats.rejected, icon: XCircle, color: "from-red-500 to-red-600" },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/[0.07] transition-colors">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-slate-400 text-sm">{stat.label}</p>
-                    <p className="text-3xl font-bold mt-1">{stat.value}</p>
+                    <p className="text-white/60 text-sm mb-2">{stat.label}</p>
+                    <p className="text-4xl font-bold">{stat.value}</p>
                   </div>
-                  <stat.icon className={`w-8 h-8 ${stat.color}`} />
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
+                    <stat.icon className="w-6 h-6 text-white" />
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Search */}
-        <div className="mb-6">
-          <Input
-            placeholder="Search by company, role, or location..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="bg-slate-900 border-slate-800 text-white placeholder-slate-500"
-          />
-        </div>
-
-        {/* Actions */}
-        <div className="flex items-center justify-between">
-          <div className="flex gap-2">
-            {["All", "Applied", "Interview", "Offer", "Rejected"].map((s) => (
-              <Button key={s} variant={filter === s ? "default" : "ghost"}
-                size="sm" onClick={() => setFilter(s)}
-                className={filter !== s ? "text-slate-400" : ""}>
-                {s}
-              </Button>
+              </div>
             ))}
           </div>
 
-          <Dialog open={addOpen} onOpenChange={setAddOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700">
-                <PlusCircle className="w-4 h-4 mr-2" /> Add Application
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-slate-900 border-slate-800 text-white">
-              <DialogHeader>
-                <DialogTitle>New Application</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleAddSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Company *</Label>
-                    <Input required value={form.company}
-                      onChange={e => setForm({ ...form, company: e.target.value })}
-                      className="bg-slate-800 border-slate-700"
-                      placeholder="Google" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Role *</Label>
-                    <Input required value={form.role}
-                      onChange={e => setForm({ ...form, role: e.target.value })}
-                      className="bg-slate-800 border-slate-700"
-                      placeholder="Frontend Engineer" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Location</Label>
-                    <Input value={form.location}
-                      onChange={e => setForm({ ...form, location: e.target.value })}
-                      className="bg-slate-800 border-slate-700"
-                      placeholder="Dubai, UAE" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Salary</Label>
-                    <Input value={form.salary}
-                      onChange={e => setForm({ ...form, salary: e.target.value })}
-                      className="bg-slate-800 border-slate-700"
-                      placeholder="15,000 AED" />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label>Status</Label>
-                  <Select value={form.status} onValueChange={v => setForm({ ...form, status: v as "Applied" | "Interview" | "Offer" | "Rejected" })}>
-                    <SelectTrigger className="bg-slate-800 border-slate-700">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-slate-700">
-                      {["Applied", "Interview", "Offer", "Rejected"].map(s => (
-                        <SelectItem key={s} value={s}>{s}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Notes</Label>
-                  <Input value={form.notes}
-                    onChange={e => setForm({ ...form, notes: e.target.value })}
-                    className="bg-slate-800 border-slate-700"
-                    placeholder="Any notes..." />
-                </div>
-                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
-                  Add Application
-                </Button>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        {/* Applications List */}
-        {loading ? (
-          <p className="text-slate-400 text-center py-12">Loading...</p>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-16">
-            <Briefcase className="w-12 h-12 text-slate-700 mx-auto mb-4" />
-            <p className="text-slate-400">No applications yet. Add your first one!</p>
+          {/* Search */}
+          <div>
+            <Input
+              placeholder="Search by company, role, or location..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="bg-white/5 border-white/10 text-white h-12 placeholder:text-white/40 focus:border-white/30 text-base"
+            />
           </div>
-        ) : (
-          <div className="space-y-3">
-            {filtered.map((app) => (
-              <Card key={app.id} className="bg-slate-900 border-slate-800 hover:border-slate-700 transition-colors">
-                <CardContent className="py-4 px-6">
+
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex gap-2 flex-wrap">
+              {["All", "Applied", "Interview", "Offer", "Rejected"].map((s) => (
+                <Button key={s} variant={filter === s ? "default" : "ghost"}
+                  size="sm" onClick={() => setFilter(s)}
+                  className={filter === s ? "bg-white text-black hover:bg-white/90" : "text-white/60 hover:text-white hover:bg-white/5"}>
+                  {s}
+                </Button>
+              ))}
+            </div>
+
+            <Dialog open={addOpen} onOpenChange={setAddOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-white text-black hover:bg-white/90 font-semibold">
+                  <PlusCircle className="w-4 h-4 mr-2" /> Add Application
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-black border-white/10 text-white">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold">New Application</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleAddSubmit} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-white/80">Company *</Label>
+                      <Input required value={form.company}
+                        onChange={e => setForm({ ...form, company: e.target.value })}
+                        className="bg-white/5 border-white/10 h-11 focus:border-white/30"
+                        placeholder="Google" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-white/80">Role *</Label>
+                      <Input required value={form.role}
+                        onChange={e => setForm({ ...form, role: e.target.value })}
+                        className="bg-white/5 border-white/10 h-11 focus:border-white/30"
+                        placeholder="Frontend Engineer" />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-white/80">Location</Label>
+                      <Input value={form.location}
+                        onChange={e => setForm({ ...form, location: e.target.value })}
+                        className="bg-white/5 border-white/10 h-11 focus:border-white/30"
+                        placeholder="Dubai, UAE" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-white/80">Salary</Label>
+                      <Input value={form.salary}
+                        onChange={e => setForm({ ...form, salary: e.target.value })}
+                        className="bg-white/5 border-white/10 h-11 focus:border-white/30"
+                        placeholder="15,000 AED" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-white/80">Status</Label>
+                    <Select value={form.status} onValueChange={v => setForm({ ...form, status: v as "Applied" | "Interview" | "Offer" | "Rejected" })}>
+                      <SelectTrigger className="bg-white/5 border-white/10 h-11 focus:border-white/30">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-zinc-900 border-white/10">
+                        {["Applied", "Interview", "Offer", "Rejected"].map(s => (
+                          <SelectItem key={s} value={s}>{s}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-white/80">Notes</Label>
+                    <Input value={form.notes}
+                      onChange={e => setForm({ ...form, notes: e.target.value })}
+                      className="bg-white/5 border-white/10 h-11 focus:border-white/30"
+                      placeholder="Any notes..." />
+                  </div>
+                  <Button type="submit" className="w-full h-11 bg-white text-black hover:bg-white/90 font-semibold">
+                    Add Application
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          {/* Applications List */}
+          {loading ? (
+            <p className="text-white/60 text-center py-20">Loading...</p>
+          ) : filtered.length === 0 ? (
+            <div className="text-center py-24">
+              <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Briefcase className="w-8 h-8 text-white/40" />
+              </div>
+              <p className="text-white/60 text-lg">No applications yet</p>
+              <p className="text-white/40 text-sm mt-1">Add your first one to get started</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {filtered.map((app) => (
+                <div key={app.id} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/[0.07] transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center font-bold text-blue-400">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center font-bold text-white text-lg">
                         {app.company[0]}
                       </div>
                       <div>
-                        <p className="font-semibold">{app.role}</p>
-                        <p className="text-slate-400 text-sm">{app.company}
+                        <p className="font-semibold text-lg">{app.role}</p>
+                        <p className="text-white/50 text-sm">{app.company}
                           {app.location && <span> · {app.location}</span>}
                           {app.salary && <span> · {app.salary}</span>}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-slate-500 text-sm">
+                      <span className="text-white/40 text-sm hidden sm:block">
                         {new Date(app.appliedAt).toLocaleDateString()}
                       </span>
-                      <Select value={app.status} onValueChange={v => handleStatusChange(app.id, v as "Applied" | "Interview" | "Offer" | "Rejected")}>
-                        <SelectTrigger className={`w-32 text-xs border ${STATUS_COLORS[app.status]} bg-transparent`}>
+                      <Select value={app.status} onValueChange={v => handleStatusChange(app.id, v)}>
+                        <SelectTrigger className={`w-32 text-xs border ${STATUS_COLORS[app.status]} bg-transparent h-8`}>
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-slate-800 border-slate-700">
+                        <SelectContent className="bg-zinc-900 border-white/10">
                           {["Applied", "Interview", "Offer", "Rejected"].map(s => (
                             <SelectItem key={s} value={s}>{s}</SelectItem>
                           ))}
@@ -360,88 +371,88 @@ export default function DashboardPage() {
                       </Select>
                       <Button variant="ghost" size="sm"
                         onClick={() => openEditModal(app)}
-                        className="text-slate-500 hover:text-blue-400">
+                        className="text-white/40 hover:text-white hover:bg-white/5 h-8 w-8 p-0">
                         <Edit2 className="w-4 h-4" />
                       </Button>
                       <Button variant="ghost" size="sm"
                         onClick={() => handleDelete(app.id)}
-                        className="text-slate-500 hover:text-red-400">
+                        className="text-white/40 hover:text-red-400 hover:bg-red-500/10 h-8 w-8 p-0">
                         ✕
                       </Button>
                     </div>
                   </div>
-                  {app.notes && <p className="text-slate-500 text-sm mt-2 ml-14">{app.notes}</p>}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+                  {app.notes && <p className="text-white/50 text-sm mt-3 ml-16">{app.notes}</p>}
+                </div>
+              ))}
+            </div>
+          )}
 
-        {/* Edit Modal */}
-        <Dialog open={editOpen} onOpenChange={setEditOpen}>
-          <DialogContent className="bg-slate-900 border-slate-800 text-white">
-            <DialogHeader>
-              <DialogTitle>Edit Application</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleEditSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Company *</Label>
-                  <Input required value={form.company}
-                    onChange={e => setForm({ ...form, company: e.target.value })}
-                    className="bg-slate-800 border-slate-700"
-                    placeholder="Google" />
+          {/* Edit Modal */}
+          <Dialog open={editOpen} onOpenChange={setEditOpen}>
+            <DialogContent className="bg-black border-white/10 text-white">
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold">Edit Application</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleEditSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-white/80">Company *</Label>
+                    <Input required value={form.company}
+                      onChange={e => setForm({ ...form, company: e.target.value })}
+                      className="bg-white/5 border-white/10 h-11 focus:border-white/30"
+                      placeholder="Google" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-white/80">Role *</Label>
+                    <Input required value={form.role}
+                      onChange={e => setForm({ ...form, role: e.target.value })}
+                      className="bg-white/5 border-white/10 h-11 focus:border-white/30"
+                      placeholder="Frontend Engineer" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-white/80">Location</Label>
+                    <Input value={form.location}
+                      onChange={e => setForm({ ...form, location: e.target.value })}
+                      className="bg-white/5 border-white/10 h-11 focus:border-white/30"
+                      placeholder="Dubai, UAE" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-white/80">Salary</Label>
+                    <Input value={form.salary}
+                      onChange={e => setForm({ ...form, salary: e.target.value })}
+                      className="bg-white/5 border-white/10 h-11 focus:border-white/30"
+                      placeholder="15,000 AED" />
+                  </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Role *</Label>
-                  <Input required value={form.role}
-                    onChange={e => setForm({ ...form, role: e.target.value })}
-                    className="bg-slate-800 border-slate-700"
-                    placeholder="Frontend Engineer" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Location</Label>
-                  <Input value={form.location}
-                    onChange={e => setForm({ ...form, location: e.target.value })}
-                    className="bg-slate-800 border-slate-700"
-                    placeholder="Dubai, UAE" />
+                  <Label className="text-white/80">Status</Label>
+                  <Select value={form.status} onValueChange={v => setForm({ ...form, status: v as "Applied" | "Interview" | "Offer" | "Rejected" })}>
+                    <SelectTrigger className="bg-white/5 border-white/10 h-11 focus:border-white/30">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-zinc-900 border-white/10">
+                      {["Applied", "Interview", "Offer", "Rejected"].map(s => (
+                        <SelectItem key={s} value={s}>{s}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Salary</Label>
-                  <Input value={form.salary}
-                    onChange={e => setForm({ ...form, salary: e.target.value })}
-                    className="bg-slate-800 border-slate-700"
-                    placeholder="15,000 AED" />
+                  <Label className="text-white/80">Notes</Label>
+                  <Input value={form.notes}
+                    onChange={e => setForm({ ...form, notes: e.target.value })}
+                    className="bg-white/5 border-white/10 h-11 focus:border-white/30"
+                    placeholder="Any notes..." />
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label>Status</Label>
-                <Select value={form.status} onValueChange={v => setForm({ ...form, status: v as "Applied" | "Interview" | "Offer" | "Rejected" })}>
-                  <SelectTrigger className="bg-slate-800 border-slate-700">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-700">
-                    {["Applied", "Interview", "Offer", "Rejected"].map(s => (
-                      <SelectItem key={s} value={s}>{s}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Notes</Label>
-                <Input value={form.notes}
-                  onChange={e => setForm({ ...form, notes: e.target.value })}
-                  className="bg-slate-800 border-slate-700"
-                  placeholder="Any notes..." />
-              </div>
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
-                Save Changes
-              </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+                <Button type="submit" className="w-full h-11 bg-white text-black hover:bg-white/90 font-semibold">
+                  Save Changes
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </div>
   );

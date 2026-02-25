@@ -35,50 +35,59 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950">
-      <Card className="w-full max-w-md bg-slate-900 border-slate-800">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-white">Welcome back</CardTitle>
-          <CardDescription className="text-slate-400">
-            Sign in to your job tracker
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-black overflow-hidden">
+      {/* Background gradients */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/20 rounded-full blur-[120px]" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-md mx-4">
+        {/* Logo/Brand */}
+        <Link href="/" className="block text-center mb-12">
+          <h2 className="text-3xl font-bold">JobTrackr</h2>
+        </Link>
+
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 lg:p-10">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-2">Welcome back</h1>
+            <p className="text-white/60">Sign in to continue</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-200">Email</Label>
+              <Label htmlFor="email" className="text-sm text-white/80">Email</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
                 placeholder="you@example.com"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                className="bg-white/5 border-white/10 text-white h-12 placeholder:text-white/40 focus:border-white/30"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-200">Password</Label>
+              <Label htmlFor="password" className="text-sm text-white/80">Password</Label>
               <Input
                 id="password"
                 name="password"
                 type="password"
                 required
-                className="bg-slate-800 border-slate-700 text-white"
+                className="bg-white/5 border-white/10 text-white h-12 placeholder:text-white/40 focus:border-white/30"
               />
             </div>
             {error && <p className="text-red-400 text-sm">{error}</p>}
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full h-12 bg-white text-black hover:bg-white/90 font-semibold" disabled={loading}>
               {loading ? "Signing in..." : "Sign in"}
             </Button>
-            <p className="text-center text-sm text-slate-400">
+            <p className="text-center text-sm text-white/60 pt-2">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="text-blue-400 hover:underline">
-                Register
+              <Link href="/register" className="text-white hover:underline font-medium">
+                Create one
               </Link>
             </p>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

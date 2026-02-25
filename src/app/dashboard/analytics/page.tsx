@@ -109,97 +109,89 @@ export default function AnalyticsPage() {
   const statusData = getStatusDistribution();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      {/* Header */}
-      <div className="border-b border-slate-800 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link href="/dashboard">
-            <Button variant="ghost" className="text-slate-400 hover:text-white">
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-          </Link>
-          <div>
-            <h1 className="text-xl font-bold">Analytics</h1>
-            <p className="text-slate-400 text-sm">Your job application metrics</p>
-          </div>
-        </div>
+    <div className="min-h-screen bg-black text-white">
+      {/* Background gradients */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-50">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px]" />
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
-        {/* Key Metrics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="bg-slate-900 border-slate-800">
-            <CardContent className="pt-6">
-              <p className="text-slate-400 text-sm">Total Applications</p>
-              <p className="text-3xl font-bold mt-2">{totalApplications}</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-slate-900 border-slate-800">
-            <CardContent className="pt-6">
-              <p className="text-slate-400 text-sm">Interview Rate</p>
-              <p className="text-3xl font-bold mt-2 text-yellow-400">{interviewRate}%</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-slate-900 border-slate-800">
-            <CardContent className="pt-6">
-              <p className="text-slate-400 text-sm">Offer Rate</p>
-              <p className="text-3xl font-bold mt-2 text-green-400">{offerRate}%</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-slate-900 border-slate-800">
-            <CardContent className="pt-6">
-              <p className="text-slate-400 text-sm">Rejection Rate</p>
-              <p className="text-3xl font-bold mt-2 text-red-400">{totalApplications > 0 ? (rejected / totalApplications * 100).toFixed(1) : 0}%</p>
-            </CardContent>
-          </Card>
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="border-b border-white/10 px-6 lg:px-12 py-6">
+          <div className="max-w-[1400px] mx-auto flex items-center gap-4">
+            <Link href="/dashboard">
+              <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/5 h-10 w-10 p-0">
+                <ArrowLeft className="w-5 h-5" />
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-2xl font-bold">Analytics</h1>
+              <p className="text-white/50 text-sm mt-1">Your job search insights</p>
+            </div>
+          </div>
         </div>
 
-        {/* Charts */}
-        {loading ? (
-          <p className="text-slate-400 text-center py-12">Loading...</p>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Timeline Chart */}
-            <Card className="bg-slate-900 border-slate-800 col-span-1 lg:col-span-2">
-              <CardHeader>
-                <CardTitle>Applications Over Time</CardTitle>
-              </CardHeader>
-              <CardContent>
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12 space-y-10">
+          {/* Key Metrics */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+              <p className="text-white/60 text-sm mb-2">Total Applications</p>
+              <p className="text-4xl font-bold">{totalApplications}</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+              <p className="text-white/60 text-sm mb-2">Interview Rate</p>
+              <p className="text-4xl font-bold text-yellow-400">{interviewRate}%</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+              <p className="text-white/60 text-sm mb-2">Offer Rate</p>
+              <p className="text-4xl font-bold text-green-400">{offerRate}%</p>
+            </div>
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+              <p className="text-white/60 text-sm mb-2">Rejection Rate</p>
+              <p className="text-4xl font-bold text-red-400">{totalApplications > 0 ? (rejected / totalApplications * 100).toFixed(1) : 0}%</p>
+            </div>
+          </div>
+
+          {/* Charts */}
+          {loading ? (
+            <p className="text-white/60 text-center py-20">Loading...</p>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Timeline Chart */}
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 col-span-1 lg:col-span-2">
+                <h3 className="text-xl font-bold mb-6">Applications Over Time</h3>
                 {timelineData.length > 0 ? (
                   <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={timelineData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                      <XAxis dataKey="week" stroke="#94a3b8" />
-                      <YAxis stroke="#94a3b8" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                      <XAxis dataKey="week" stroke="rgba(255,255,255,0.5)" />
+                      <YAxis stroke="rgba(255,255,255,0.5)" />
                       <Tooltip
                         contentStyle={{
-                          backgroundColor: "#1e293b",
-                          border: "1px solid #475569",
-                          borderRadius: "8px",
+                          backgroundColor: "#000",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                          borderRadius: "12px",
                         }}
-                        labelStyle={{ color: "#e2e8f0" }}
+                        labelStyle={{ color: "#fff" }}
                       />
                       <Line
                         type="monotone"
                         dataKey="applications"
-                        stroke="#3b82f6"
-                        dot={{ fill: "#3b82f6", r: 5 }}
-                        strokeWidth={2}
+                        stroke="#60a5fa"
+                        dot={{ fill: "#60a5fa", r: 5 }}
+                        strokeWidth={3}
                       />
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (
-                  <p className="text-slate-400 text-center py-12">No data available</p>
+                  <p className="text-white/50 text-center py-12">No data available</p>
                 )}
-              </CardContent>
-            </Card>
+              </div>
 
-            {/* Status Distribution */}
-            <Card className="bg-slate-900 border-slate-800">
-              <CardHeader>
-                <CardTitle>Status Distribution</CardTitle>
-              </CardHeader>
-              <CardContent>
+              {/* Status Distribution */}
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
+                <h3 className="text-xl font-bold mb-6">Status Distribution</h3>
                 {statusData.length > 0 ? (
                   <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
@@ -209,7 +201,7 @@ export default function AnalyticsPage() {
                         cy="50%"
                         labelLine={false}
                         label={({ name, value }) => `${name}: ${value}`}
-                        outerRadius={80}
+                        outerRadius={90}
                         fill="#8884d8"
                         dataKey="value"
                       >
@@ -219,50 +211,48 @@ export default function AnalyticsPage() {
                       </Pie>
                       <Tooltip
                         contentStyle={{
-                          backgroundColor: "#1e293b",
-                          border: "1px solid #475569",
-                          borderRadius: "8px",
+                          backgroundColor: "#000",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                          borderRadius: "12px",
                         }}
-                        labelStyle={{ color: "#e2e8f0" }}
+                        labelStyle={{ color: "#fff" }}
                       />
                     </PieChart>
                   </ResponsiveContainer>
                 ) : (
-                  <p className="text-slate-400 text-center py-12">No data available</p>
+                  <p className="text-white/50 text-center py-12">No data available</p>
                 )}
-              </CardContent>
-            </Card>
+              </div>
 
-            {/* Application Breakdown */}
-            <Card className="bg-slate-900 border-slate-800">
-              <CardHeader>
-                <CardTitle>Application Breakdown</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {[
-                  { label: "Applied", value: applications.filter(a => a.status === "Applied").length, color: "bg-blue-500/20" },
-                  { label: "Interview", value: interviews, color: "bg-yellow-500/20" },
-                  { label: "Offers", value: offers, color: "bg-green-500/20" },
-                  { label: "Rejected", value: rejected, color: "bg-red-500/20" },
-                ].map((item) => (
-                  <div key={item.label} className="flex items-center justify-between">
-                    <span className="text-slate-400">{item.label}</span>
-                    <div className="flex items-center gap-3">
-                      <div className={`px-3 py-1 rounded ${item.color}`}>
-                        {item.value}
+              {/* Application Breakdown */}
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
+                <h3 className="text-xl font-bold mb-6">Application Breakdown</h3>
+                <div className="space-y-4">
+                  {[
+                    { label: "Applied", value: applications.filter(a => a.status === "Applied").length, color: "bg-blue-500/20 text-blue-400" },
+                    { label: "Interview", value: interviews, color: "bg-yellow-500/20 text-yellow-400" },
+                    { label: "Offers", value: offers, color: "bg-green-500/20 text-green-400" },
+                    { label: "Rejected", value: rejected, color: "bg-red-500/20 text-red-400" },
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-center justify-between">
+                      <span className="text-white/70">{item.label}</span>
+                      <div className="flex items-center gap-3">
+                        <div className={`px-4 py-1.5 rounded-lg font-semibold ${item.color}`}>
+                          {item.value}
+                        </div>
+                        {totalApplications > 0 && (
+                          <span className="text-white/40 text-sm w-12 text-right">
+                            {((item.value / totalApplications) * 100).toFixed(0)}%
+                          </span>
+                        )}
                       </div>
-                      {totalApplications > 0 && (
-                        <span className="text-slate-500 text-sm">
-                          {((item.value / totalApplications) * 100).toFixed(0)}%
-                        </span>
-                      )}
                     </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-        )}
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
